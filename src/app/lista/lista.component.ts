@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import Cartao from '../cartao/cartao.model';
+import Task from '../task/task.model';
+import { TaskStatus } from '../task/task-status.enum';
 
 @Component({
   selector: 'app-lista',
@@ -9,18 +10,28 @@ import Cartao from '../cartao/cartao.model';
 export class ListaComponent implements OnInit {
 
   @Input() titulo: string = '';
-  @Input() cartoes: Cartao[] = [];
+  @Input() tasks: Task[] = [];
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  novoCartao(cartao: any) {
-    this.cartoes.push(cartao as Cartao);
+  novaTask(task: Task) {
+    if (task) {
+      this.tasks.push(task);
+    }
   }
 
-  removeCartao(indice: any) {
-    this.cartoes.splice(indice as number, 1);
+  removeTask(indice: number) {
+    if (indice >= 0 && indice < this.tasks.length) {
+      this.tasks.splice(indice, 1);
+    }
+  }
+
+  atualizarStatus(evento: {indice: number, status: TaskStatus}) {
+    if (evento.indice >= 0 && evento.indice < this.tasks.length) {
+      this.tasks[evento.indice].status = evento.status;
+    }
   }
 }

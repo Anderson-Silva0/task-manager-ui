@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import Cartao from './cartao/cartao.model';
+import Task from './task/task.model';
+import { TaskStatus } from './task/task-status.enum';
 
 @Component({
   selector: 'app-root',
@@ -7,68 +8,45 @@ import Cartao from './cartao/cartao.model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
- 
   tarefas = [
     {
-      nome: 'Estudar SOLID',
-      descricao: 'Melhorar os conhecimentos nesses princípios de programação',
-      checklist: [
-        {
-          nome: 'Princípio de responsabilidade única',
-          concluido: true,
-        },
-        {
-          nome: 'Princípio Aberto-Fechado',
-          concluido: false,
-        },
-        {
-          nome: 'Princípio da substituição de Liskov',
-          concluido: false,
-        },
-        {
-          nome: 'Princípio da Segregação da Interface',
-          concluido: false,
-        },
-        {
-          nome: 'Princípio da inversão da dependência',
-          concluido: false,
-        }
-      ]
+      id: 1,
+      title: 'Implementar Login',
+      description: 'Criar tela de login com autenticação JWT',
+      status: TaskStatus.EM_ANDAMENTO,
+      createdAt: new Date('2024-03-15T10:00:00'),
+      userId: 1
     },
     {
-      nome: 'Estudar Orientação a Objetos',
-      descricao: 'Compreender orientação a objetos e aplicar em exercícios práticos',
-      checklist: [
-        {
-          nome: 'Abstração',
-          concluido: true,
-        },
-        {
-          nome: 'Encapsulamento',
-          concluido: false,
-        },
-        {
-          nome: 'Herança',
-          concluido: false,
-        },
-        {
-          nome: 'Polimorfismo',
-          concluido: false,
-        },
-      ]
+      id: 2,
+      title: 'Criar Dashboard',
+      description: 'Desenvolver dashboard com gráficos e métricas',
+      status: TaskStatus.PENDENTE,
+      createdAt: new Date('2024-03-15T11:30:00'),
+      userId: 1
+    },
+    {
+      id: 3,
+      title: 'Configurar CI/CD',
+      description: 'Implementar pipeline de integração contínua',
+      status: TaskStatus.CONCLUIDA,
+      createdAt: new Date('2024-03-14T15:45:00'),
+      userId: 1
     }
   ];
 
-  cartoes: Cartao[] = [];
+  tasks: Task[] = [];
 
-  ngOnInit(): void {
-    
-    this.tarefas.forEach((t) => {
-      let cartao = new Cartao();
-      cartao.nome = t.nome;
-      cartao.descricao = t.descricao;
-      cartao.checklist = t.checklist;
-      this.cartoes.push(cartao);
+  ngOnInit() {
+    this.tarefas.forEach(tarefa => {
+      const task = new Task();
+      task.id = tarefa.id;
+      task.title = tarefa.title;
+      task.description = tarefa.description;
+      task.status = tarefa.status;
+      task.createdAt = tarefa.createdAt;
+      task.userId = tarefa.userId;
+      this.tasks.push(task);
     });
   }
 }

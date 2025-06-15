@@ -4,30 +4,30 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ListaComponent } from './lista/lista.component';
-import { CartaoComponent } from './cartao/cartao.component';
-import { BtnEdicaoCartaoComponent } from './cartao/btn-edicao-cartao/btn-edicao-cartao.component';
-import { BtnNovoCartaoComponent } from './cartao/btn-novo-cartao/btn-novo-cartao.component';
-import { BtnExcluirCartaoComponent } from './cartao/btn-excluir-cartao/btn-excluir-cartao.component';
-import { ChecklistComponent } from './cartao/checklist/checklist.component';
+import { TaskComponent } from './task/task.component';
+import { BtnEdicaoTaskComponent } from './task/btn-edit-task/btn-edit-task.component';
+import { BtnNovoTaskComponent } from './task/btn-new-task/btn-new-task.component';
+import { BtnExcluirTaskComponent } from './task/btn-delete-task/btn-delete-task.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListaComponent,
-    CartaoComponent,
-    BtnEdicaoCartaoComponent,
-    BtnNovoCartaoComponent,
-    BtnExcluirCartaoComponent,
-    ChecklistComponent
+    TaskComponent,
+    BtnEdicaoTaskComponent,
+    BtnNovoTaskComponent,
+    BtnExcluirTaskComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    ModalModule.forRoot(),
+    ModalModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

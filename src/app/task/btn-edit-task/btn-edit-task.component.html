@@ -1,0 +1,81 @@
+<button class="btn btn-sm btn-outline-primary" (click)="abrirModal(template)">
+    <i class="fa fa-pencil"></i> {{ texto }}
+</button>
+  
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{ texto }}</h4>
+    <button
+      type="button"
+      class="close btn btn-outline-dark pull-right"
+      aria-label="Close"
+      (click)="modalRef?.hide()"
+    >
+      <i class="fa fa-remove"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="frmEdit" (ngSubmit)="atualizaTask()">
+      <div class="form-group mb-3">
+        <label for="edt_title" class="form-label">Título</label>
+        <input
+          type="text"
+          class="form-control"
+          id="edt_title"
+          formControlName="title"
+          [ngClass]="{'is-invalid': frmEdit.get('title')?.invalid && frmEdit.get('title')?.touched}"
+        />
+        <div class="invalid-feedback" *ngIf="frmEdit.get('title')?.errors?.['required']">
+          O título é obrigatório
+        </div>
+        <div class="invalid-feedback" *ngIf="frmEdit.get('title')?.errors?.['minlength']">
+          O título deve ter no mínimo 3 caracteres
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="edt_description" class="form-label">Descrição</label>
+        <textarea
+          class="form-control"
+          id="edt_description"
+          formControlName="description"
+          rows="3"
+          [ngClass]="{'is-invalid': frmEdit.get('description')?.invalid && frmEdit.get('description')?.touched}"
+        ></textarea>
+        <div class="invalid-feedback" *ngIf="frmEdit.get('description')?.errors?.['required']">
+          A descrição é obrigatória
+        </div>
+        <div class="invalid-feedback" *ngIf="frmEdit.get('description')?.errors?.['minlength']">
+          A descrição deve ter no mínimo 5 caracteres
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="edt_status" class="form-label">Status</label>
+        <select
+          class="form-select"
+          id="edt_status"
+          formControlName="status"
+          [ngClass]="{'is-invalid': frmEdit.get('status')?.invalid && frmEdit.get('status')?.touched}"
+        >
+          <option *ngFor="let status of statusOptions" [value]="status">
+            {{ getStatusLabel(status) }}
+          </option>
+        </select>
+        <div class="invalid-feedback" *ngIf="frmEdit.get('status')?.errors?.['required']">
+          O status é obrigatório
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="frmEdit.invalid"
+        >
+          Salvar
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template> 

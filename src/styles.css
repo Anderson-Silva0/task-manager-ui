@@ -1,4 +1,7 @@
 body {
-    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #0f3443 0%, #34e89e 100%) !important;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Roboto', Arial, sans-serif;
     font-size: 16px;
 }

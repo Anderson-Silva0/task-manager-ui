@@ -1,0 +1,56 @@
+<div class="card mb-2">
+    <div class="card-body">
+        <h5 class="card-title">{{ task?.title }}</h5>
+        <p class="card-text">{{ task?.description }}</p>
+        
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="task-info">
+                <small class="text-muted">
+                    <i class="fa fa-calendar"></i> Criada em: {{ task.createdAt | date:'dd/MM/yyyy HH:mm' }}
+                </small>
+                <br>
+                <small class="text-muted">
+                    <i class="fa fa-user"></i> ID do Usuário: {{ task.userId }}
+                </small>
+            </div>
+            
+            <div class="task-status">
+                <span class="badge" 
+                    [ngClass]="{
+                        'bg-warning': task.status === TaskStatus.EM_ANDAMENTO,
+                        'bg-success': task.status === TaskStatus.CONCLUIDA,
+                        'bg-secondary': task.status === TaskStatus.PENDENTE
+                    }">
+                    <i class="fa" 
+                        [ngClass]="{
+                            'fa-clock-o': task.status === TaskStatus.EM_ANDAMENTO,
+                            'fa-check': task.status === TaskStatus.CONCLUIDA,
+                            'fa-hourglass-half': task.status === TaskStatus.PENDENTE
+                        }">
+                    </i>
+                    {{ task.status === TaskStatus.EM_ANDAMENTO ? 'Em Andamento' : 
+                       task.status === TaskStatus.CONCLUIDA ? 'Concluída' : 'Pendente' }}
+                </span>
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <app-btn-edicao-task
+                [estilo]="'btn btn-sm btn-outline-primary'"
+                [texto]="'Editar'"
+                [icone]="'fa fa-pencil'"
+                [task]="task"
+                (atualizaTaskEvent)="atualizaTask($event)"
+            ></app-btn-edicao-task>
+
+            <app-btn-excluir-task
+                [estilo]="'btn btn-sm btn-danger mx-2'"
+                [texto]="'Remover'"
+                [icone]="'fa fa-trash'"
+                [nomeTask]="task.title"
+                [indiceTask]="taskIndex"
+                (removeTaskEvent)="removeTask($event)"
+            ></app-btn-excluir-task>
+        </div>
+    </div>
+</div>

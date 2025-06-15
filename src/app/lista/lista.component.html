@@ -2,20 +2,21 @@
 <div class="container py-4 bg-white rounded">
     <div class="row d-flex">
         <div class="col-md-12">
-            <app-btn-novo-cartao 
+            <app-btn-novo-task 
                 [estilo]="'btn btn-success pull-right mb-3'" 
-                [texto]="'Novo cartão'" 
-                (novoCartaoEvent)="novoCartao($event)"
-            ></app-btn-novo-cartao>
+                [texto]="'Nova Tarefa'" 
+                (novoTaskEvent)="novaTask($event)"
+            ></app-btn-novo-task>
         </div>
     </div>
     <div class="row d-flex justify-content-center">
-        <div class="col-md-4 mb-3 mb-sm-0" *ngFor="let cartao of cartoes;let i = index">
-            <app-cartao 
-                [cartao]="cartao" 
-                [indiceCartao]="i"
-                (notificaCartaoExcluidoEvent)="removeCartao($event)"
-            ></app-cartao>
+        <div class="col-md-4 mb-3 mb-sm-0" *ngFor="let task of tasks;let i = index">
+            <app-task 
+                [task]="task" 
+                [taskIndex]="i"
+                (notificaTaskExcluidaEvent)="removeTask($event)"
+                (atualizaStatusEvent)="atualizarStatus($event)"
+            ></app-task>
         </div>
     </div>
 </div>

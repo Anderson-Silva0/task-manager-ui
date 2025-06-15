@@ -1,0 +1,120 @@
+.card {
+    min-height: 270px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    box-shadow: 0 6px 32px 0 rgba(44, 62, 80, 0.18), 0 1.5px 4px 0 rgba(44, 62, 80, 0.10);
+    border: none;
+    color: #444;
+    background: #fff;
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+.card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-title {
+    color: #ff8c2a;
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+    min-height: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.card-text {
+    flex: 1;
+    min-height: 2.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+    color: #444;
+}
+
+.task-info {
+    min-height: 2rem;
+    font-size: 0.95rem;
+    color: #f8f9fa;
+}
+
+.task-status {
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    min-width: 70px;
+    text-align: right;
+    z-index: 2;
+    transform: translateY(-50%);
+}
+
+.badge {
+    padding: 0.28rem 0.7rem;
+    font-size: 0.82rem;
+    border-radius: 12px;
+    background: #fff;
+    color: #ff8c2a;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(15, 52, 67, 0.08);
+}
+
+.badge.bg-warning {
+    background: #ff8c2a !important;
+    color: #fff !important;
+}
+.badge.bg-info {
+    background: #34e89e !important;
+    color: #0f3443 !important;
+}
+.badge.bg-success {
+    background: #2ecc71 !important;
+    color: #fff !important;
+}
+.badge.bg-secondary {
+    background: #0f3443 !important;
+    color: #fff !important;
+}
+
+.mt-3 {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: auto;
+}
+
+.btn, .btn-sm {
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(15, 52, 67, 0.08);
+}
+
+.btn-primary, .btn-success {
+    background: #ff8c2a;
+    border: none;
+    color: #fff;
+    transition: background 0.2s;
+}
+.btn-primary:hover, .btn-success:hover {
+    background: #e6761a;
+}
+
+.btn-danger {
+    background: #e74c3c;
+    border: none;
+    color: #fff;
+}
+.btn-danger:hover {
+    background: #c0392b;
+}
