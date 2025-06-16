@@ -1,6 +1,26 @@
-<nav class="navbar">
-  <div class="navbar-content">
-    <img src="assets/logo/logo-mv.png" alt="Logo Soul MV" class="navbar-logo">
-    <button class="navbar-btn">Saiba mais</button>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img src="assets/logo/logo-mv.png" alt="Logo Soul MV" class="navbar-logo">
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item me-3">
+          <a class="nav-link" routerLink="/users" routerLinkActive="active">
+            <i class="fa fa-users"></i> Usuários
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/tasks" routerLinkActive="active">
+            <i class="fa fa-tasks"></i> Tarefas
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav> 

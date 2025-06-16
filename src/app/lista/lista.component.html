@@ -1,5 +1,5 @@
 <h1 class="text-center text-white my-4">{{ titulo }}</h1>
-<div class="container py-4 bg-white rounded">
+<div class="container py-4 rounded">
     <div class="row d-flex">
         <div class="col-md-12">
             <app-btn-novo-task 
@@ -9,13 +9,19 @@
             ></app-btn-novo-task>
         </div>
     </div>
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-4 mb-3 mb-sm-0" *ngFor="let task of tasks;let i = index">
+    <div *ngIf="error || tasks.length === 0" class="row d-flex justify-content-center">
+        <div class="col-md-8 text-center text-muted py-5">
+            <i class="fa fa-tasks fa-2x mb-3"></i>
+            <p class="mb-0">Nenhuma tarefa encontrada.</p>
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center" *ngIf="!error && tasks.length > 0">
+        <div class="col-md-4 mb-3 mb-sm-0" *ngFor="let task of tasks; let i = index">
             <app-task 
                 [task]="task" 
                 [taskIndex]="i"
                 (notificaTaskExcluidaEvent)="removeTask($event)"
-                (atualizaStatusEvent)="atualizarStatus($event)"
+                (atualizaStatusEvent)="atualizarStatus({indice: i, status: $event.status})"
             ></app-task>
         </div>
     </div>

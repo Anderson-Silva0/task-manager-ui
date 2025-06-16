@@ -10,26 +10,19 @@
                 </small>
                 <br>
                 <small class="text-muted">
-                    <i class="fa fa-user"></i> ID do Usuário: {{ task.userId }}
+                    <i class="fa fa-user"></i> Responsável: {{ userName }}
                 </small>
             </div>
             
             <div class="task-status">
-                <span class="badge" 
-                    [ngClass]="{
-                        'bg-warning': task.status === TaskStatus.EM_ANDAMENTO,
-                        'bg-success': task.status === TaskStatus.CONCLUIDA,
-                        'bg-secondary': task.status === TaskStatus.PENDENTE
-                    }">
-                    <i class="fa" 
-                        [ngClass]="{
-                            'fa-clock-o': task.status === TaskStatus.EM_ANDAMENTO,
-                            'fa-check': task.status === TaskStatus.CONCLUIDA,
-                            'fa-hourglass-half': task.status === TaskStatus.PENDENTE
-                        }">
-                    </i>
-                    {{ task.status === TaskStatus.EM_ANDAMENTO ? 'Em Andamento' : 
-                       task.status === TaskStatus.CONCLUIDA ? 'Concluída' : 'Pendente' }}
+                <span class="badge" [ngClass]="{
+                    'bg-warning': task.status === TaskStatus.EM_ANDAMENTO,
+                    'bg-success': task.status === TaskStatus.CONCLUIDA,
+                    'bg-secondary': task.status === TaskStatus.PENDENTE
+                }">
+                    {{ task.status === TaskStatus.PENDENTE ? 'Pendente' : 
+                       task.status === TaskStatus.EM_ANDAMENTO ? 'Em Andamento' : 
+                       'Concluída' }}
                 </span>
             </div>
         </div>

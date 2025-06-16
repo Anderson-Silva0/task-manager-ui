@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import Task from './task.model';
 import { TaskStatus } from './task-status.enum';
+import { UserService } from '../user/user.service';
+import { UserResponse } from '../models/user.model';
 
 @Component({
   selector: 'app-task',
@@ -9,15 +11,31 @@ import { TaskStatus } from './task-status.enum';
 })
 export class TaskComponent implements OnInit {
   TaskStatus = TaskStatus; // Para usar no template
+  userName: string = '';
 
   @Input() task: Task = new Task();
   @Input() taskIndex: number = 0;
   @Output() notificaTaskExcluidaEvent = new EventEmitter<number>();
   @Output() atualizaStatusEvent = new EventEmitter<{indice: number, status: TaskStatus}>();
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
+    this.loadUserName();
+  }
+
+  private loadUserName(): void {
+    if (this.task?.userId) {
+      this.userService.getUserById(this.task.userId).subscribe({
+        next: (user: UserResponse) => {
+          this.userName = user.name;
+        },
+        error: (error) => {
+          console.error('Erro ao carregar nome do usuário:', error);
+          this.userName = 'Usuário não encontrado';
+        }
+      });
+    }
   }
 
   atualizarStatus(status: TaskStatus) {
@@ -30,6 +48,7 @@ export class TaskComponent implements OnInit {
   atualizaTask(task: Task) {
     if (task) {
       this.task = task;
+      this.loadUserName(); // Recarrega o nome do usuário quando a tarefa é atualizada
     }
   }
 

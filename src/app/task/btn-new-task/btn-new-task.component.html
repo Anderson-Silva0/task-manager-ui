@@ -1,61 +1,59 @@
-<button [class]="estilo" (click)="abrirModal(template)">{{ texto }}</button>
+<button class="btn" [ngClass]="estilo" (click)="abrirModal(templateModal)">
+    <i class="fa fa-plus"></i> {{ texto }}
+</button>
 
-<ng-template #template>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">{{ texto }}</h4>
-    <button
-      type="button"
-      class="close btn btn-outline-dark pull-right"
-      aria-label="Close"
-      (click)="modalRef?.hide()"
-    >
-     <i class="fa fa-remove"></i>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="frmNew" (ngSubmit)="salvar()" (keyup.enter)="$event.preventDefault()">
-      <div class="form-group mb-3">
-        <label for="title" class="form-label">Título</label>
-        <input
-          type="text"
-          class="form-control"
-          id="title"
-          formControlName="title"
-          [ngClass]="{'is-invalid': frmNew.get('title')?.invalid && frmNew.get('title')?.touched}"
-        />
-        <div class="invalid-feedback" *ngIf="frmNew.get('title')?.errors?.['required']">
-          O título é obrigatório
-        </div>
-        <div class="invalid-feedback" *ngIf="frmNew.get('title')?.errors?.['minlength']">
-          O título deve ter no mínimo 3 caracteres
-        </div>
-      </div>
-      <div class="form-group mb-3">
-        <label for="description" class="form-label">Descrição</label>
-        <textarea
-          class="form-control"
-          id="description"
-          formControlName="description"
-          rows="3"
-          [ngClass]="{'is-invalid': frmNew.get('description')?.invalid && frmNew.get('description')?.touched}"
-        ></textarea>
-        <div class="invalid-feedback" *ngIf="frmNew.get('description')?.errors?.['required']">
-          A descrição é obrigatória
-        </div>
-        <div class="invalid-feedback" *ngIf="frmNew.get('description')?.errors?.['minlength']">
-          A descrição deve ter no mínimo 5 caracteres
-        </div>
-      </div>
+<ng-template #templateModal>
+    <div class="modal-header">
+        <h4 class="modal-title">Nova Tarefa</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modalRef?.hide()"></button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="frmNew" (ngSubmit)="salvar()">
+            <div class="mb-3">
+                <label for="title" class="form-label">Título</label>
+                <input type="text" 
+                       class="form-control" 
+                       id="title" 
+                       formControlName="title" 
+                       placeholder="Digite o título da tarefa"
+                       [ngClass]="{'is-invalid': (frmNew.get('title')?.invalid && frmNew.get('title')?.touched) || backendErrors['title']}">
+                <div class="invalid-feedback" *ngIf="(frmNew.get('title')?.invalid && frmNew.get('title')?.touched) || backendErrors['title']">
+                    {{ getErrorMessage('title') }}
+                </div>
+            </div>
 
-      <div class="d-flex justify-content-center">
-        <button
-          type="submit"
-          class="btn btn-primary"
-          [disabled]="frmNew.invalid"
-        >
-          Salvar
-        </button>
-      </div>
-    </form>
-  </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Descrição</label>
+                <textarea class="form-control" 
+                          id="description" 
+                          formControlName="description" 
+                          rows="3" 
+                          placeholder="Digite a descrição da tarefa (opcional)"
+                          [ngClass]="{'is-invalid': backendErrors['description']}">
+                </textarea>
+                <div class="invalid-feedback" *ngIf="backendErrors['description']">
+                    {{ getErrorMessage('description') }}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="userId" class="form-label">Responsável</label>
+                <select class="form-select" 
+                        id="userId" 
+                        formControlName="userId"
+                        [ngClass]="{'is-invalid': (frmNew.get('userId')?.invalid && frmNew.get('userId')?.touched) || backendErrors['userId']}">
+                    <option value="">Selecione um responsável</option>
+                    <option *ngFor="let user of users" [value]="user.id">{{ user.name }} ({{ user.email }})</option>
+                </select>
+                <div class="invalid-feedback" *ngIf="(frmNew.get('userId')?.invalid && frmNew.get('userId')?.touched) || backendErrors['userId']">
+                    {{ getErrorMessage('userId') }}
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="modalRef?.hide()">Cancelar</button>
+                <button type="submit" class="btn btn-primary" [disabled]="frmNew.invalid">Salvar</button>
+            </div>
+        </form>
+    </div>
 </ng-template> 
