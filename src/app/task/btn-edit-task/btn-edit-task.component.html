@@ -3,58 +3,56 @@
 </button>
   
 <ng-template #template>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">{{ texto }}</h4>
-    <button
-      type="button"
-      class="close btn btn-outline-dark pull-right"
-      aria-label="Close"
-      (click)="modalRef?.hide()"
-    >
-      <i class="fa fa-remove"></i>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="frmEdit" (ngSubmit)="atualizaTask()">
-      <div class="form-group mb-3">
-        <label for="edt_title" class="form-label">Título</label>
+  <form [formGroup]="frmEdit" (ngSubmit)="atualizaTask()">
+    <div class="modal-header">
+      <h4 class="modal-title">Editar Tarefa</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modalRef?.hide()"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3">
+        <label for="title" class="form-label">Título</label>
         <input
           type="text"
           class="form-control"
-          id="edt_title"
+          id="title"
           formControlName="title"
           [ngClass]="{'is-invalid': frmEdit.get('title')?.invalid && frmEdit.get('title')?.touched}"
         />
         <div class="invalid-feedback" *ngIf="frmEdit.get('title')?.errors?.['required']">
-          O título é obrigatório
+          Título é obrigatório
         </div>
         <div class="invalid-feedback" *ngIf="frmEdit.get('title')?.errors?.['minlength']">
-          O título deve ter no mínimo 3 caracteres
+          Título deve ter no mínimo 3 caracteres
         </div>
       </div>
 
-      <div class="form-group mb-3">
-        <label for="edt_description" class="form-label">Descrição</label>
+      <div class="mb-3">
+        <label for="description" class="form-label">Descrição</label>
         <textarea
           class="form-control"
-          id="edt_description"
-          formControlName="description"
+          id="description"
           rows="3"
+          formControlName="description"
           [ngClass]="{'is-invalid': frmEdit.get('description')?.invalid && frmEdit.get('description')?.touched}"
         ></textarea>
         <div class="invalid-feedback" *ngIf="frmEdit.get('description')?.errors?.['required']">
-          A descrição é obrigatória
+          Descrição é obrigatória
         </div>
         <div class="invalid-feedback" *ngIf="frmEdit.get('description')?.errors?.['minlength']">
-          A descrição deve ter no mínimo 5 caracteres
+          Descrição deve ter no mínimo 5 caracteres
         </div>
       </div>
 
-      <div class="form-group mb-3">
-        <label for="edt_status" class="form-label">Status</label>
+      <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
         <select
           class="form-select"
-          id="edt_status"
+          id="status"
           formControlName="status"
           [ngClass]="{'is-invalid': frmEdit.get('status')?.invalid && frmEdit.get('status')?.touched}"
         >
@@ -63,19 +61,37 @@
           </option>
         </select>
         <div class="invalid-feedback" *ngIf="frmEdit.get('status')?.errors?.['required']">
-          O status é obrigatório
+          Status é obrigatório
         </div>
       </div>
 
-      <div class="d-flex justify-content-center">
-        <button
-          type="submit"
-          class="btn btn-primary"
-          [disabled]="frmEdit.invalid"
+      <div class="mb-3">
+        <label for="deadline" class="form-label">Prazo (opcional)</label>
+        <input
+          type="datetime-local"
+          class="form-control"
+          id="deadline"
+          formControlName="deadline"
         >
-          Salvar
-        </button>
       </div>
-    </form>
-  </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        aria-label="Close"
+        (click)="modalRef?.hide()"
+      >
+        <i class="fa fa-remove"></i> Cancelar
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="frmEdit.invalid"
+      >
+        <i class="fa fa-save"></i> Salvar
+      </button>
+    </div>
+  </form>
 </ng-template> 

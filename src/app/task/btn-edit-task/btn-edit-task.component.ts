@@ -3,6 +3,8 @@ import Task from '../../models/task.model';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaskStatus } from '../task-status.enum';
+import { TaskService } from '../../services/task.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-btn-edicao-task',
@@ -25,6 +27,8 @@ export class BtnEdicaoTaskComponent implements OnInit {
   constructor(
     private modalService: BsModalService,
     private formBuilder: FormBuilder,
+    private taskService: TaskService,
+    private snackBar: MatSnackBar
   ) {
     this.criarFormulario();
   }
@@ -33,7 +37,8 @@ export class BtnEdicaoTaskComponent implements OnInit {
     this.frmEdit = this.formBuilder.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(5)]],
-      status: [TaskStatus.PENDENTE, Validators.required]
+      status: [TaskStatus.PENDENTE, Validators.required],
+      deadline: [null]
     });
   }
 
@@ -45,13 +50,25 @@ export class BtnEdicaoTaskComponent implements OnInit {
   }
 
   atualizaTask() {
-    if (this.frmEdit.valid && this.task) {
-      this.modalRef?.hide();
-      const task = this.frmEdit.getRawValue() as Task;
-      task.id = this.task.id;
-      task.createdAt = this.task.createdAt;
-      task.userId = this.task.userId;
-      this.atualizaTaskEvent.emit(task);
+    if (this.frmEdit.valid && this.task?.id) {
+      const task = {
+        title: this.frmEdit.value.title,
+        description: this.frmEdit.value.description,
+        status: this.frmEdit.value.status,
+        userId: this.task.userId
+      };
+
+      this.taskService.updateTask(this.task.id, task).subscribe({
+        next: (updatedTask) => {
+          this.modalRef?.hide();
+          this.atualizaTaskEvent.emit(updatedTask);
+          this.snackBar.open('Tarefa atualizada com sucesso!', 'Fechar', { duration: 3000 });
+        },
+        error: (error) => {
+          console.error('Erro ao atualizar tarefa:', error);
+          this.snackBar.open('Erro ao atualizar tarefa', 'Fechar', { duration: 3000 });
+        }
+      });
     }
   }
   
@@ -60,7 +77,8 @@ export class BtnEdicaoTaskComponent implements OnInit {
       this.frmEdit.patchValue({
         title: this.task.title,
         description: this.task.description,
-        status: this.task.status
+        status: this.task.status,
+        deadline: this.task.deadline ? new Date(this.task.deadline) : null
       });
       this.modalRef = this.modalService.show(template);
     }
@@ -72,8 +90,8 @@ export class BtnEdicaoTaskComponent implements OnInit {
         return 'Pendente';
       case TaskStatus.EM_ANDAMENTO:
         return 'Em Andamento';
-      case TaskStatus.CONCLUIDA:
-        return 'Concluída';
+      case TaskStatus.CONCLUIDO:
+        return 'Concluído';
       default:
         return '';
     }

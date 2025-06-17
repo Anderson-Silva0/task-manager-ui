@@ -12,17 +12,21 @@
                 <small class="text-muted">
                     <i class="fa fa-user"></i> Responsável: {{ userName }}
                 </small>
+                <br>
+                <small class="text-muted" *ngIf="task.deadline">
+                    <i class="fa fa-clock"></i> Prazo: {{ task.deadline | date:'dd/MM/yyyy HH:mm' }}
+                </small>
             </div>
             
             <div class="task-status">
                 <span class="badge" [ngClass]="{
                     'bg-warning': task.status === TaskStatus.EM_ANDAMENTO,
-                    'bg-success': task.status === TaskStatus.CONCLUIDA,
+                    'bg-success': task.status === TaskStatus.CONCLUIDO,
                     'bg-secondary': task.status === TaskStatus.PENDENTE
                 }">
                     {{ task.status === TaskStatus.PENDENTE ? 'Pendente' : 
                        task.status === TaskStatus.EM_ANDAMENTO ? 'Em Andamento' : 
-                       'Concluída' }}
+                       'Concluído' }}
                 </span>
             </div>
         </div>
