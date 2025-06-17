@@ -73,6 +73,11 @@ export class BtnEdicaoTaskComponent implements OnInit {
   }
   
   abrirModal(template: TemplateRef<any>) {
+    if (this.task?.status === TaskStatus.CONCLUIDO) {
+      this.snackBar.open('Não é possível editar tarefas concluídas', 'Fechar', { duration: 3000 });
+      return;
+    }
+
     if (this.task) {
       this.frmEdit.patchValue({
         title: this.task.title,

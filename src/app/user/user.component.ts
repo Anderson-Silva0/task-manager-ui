@@ -16,6 +16,7 @@ export class UserComponent implements OnInit {
   error: boolean = false;
   loading: boolean = false;
   displayedColumns: string[] = ['name', 'email', 'createdAt', 'actions'];
+  titulo: string = 'Gerenciamento de Usuários';
 
   constructor(
     private userService: UserService,
@@ -55,14 +56,13 @@ export class UserComponent implements OnInit {
   loadUsers(): void {
     this.loading = true;
     this.error = false;
-    this.dataSource.data = []; // Limpa os dados antes de carregar
     
     this.userService.getUsers().subscribe({
       next: (users) => {
         this.dataSource.data = users;
         this.error = false;
         this.loading = false;
-        this.cdr.detectChanges(); // Força a detecção de mudanças
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Erro ao carregar usuários:', error);
@@ -70,7 +70,7 @@ export class UserComponent implements OnInit {
         this.dataSource.data = [];
         this.showErrorMessage(error, 'Erro ao carregar usuários');
         this.loading = false;
-        this.cdr.detectChanges(); // Força a detecção de mudanças
+        this.cdr.detectChanges();
       }
     });
   }
@@ -84,7 +84,6 @@ export class UserComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.loading = true;
-        this.dataSource.data = []; // Limpa os dados antes de atualizar
 
         const request$ = user 
           ? this.userService.updateUser(user.id, result)
@@ -103,7 +102,7 @@ export class UserComponent implements OnInit {
               error,
               user ? 'Erro ao atualizar usuário' : 'Erro ao criar usuário'
             );
-            this.cdr.detectChanges(); // Força a detecção de mudanças
+            this.cdr.detectChanges();
           }
         });
       }
@@ -113,17 +112,16 @@ export class UserComponent implements OnInit {
   confirmDelete(user: UserResponse): void {
     if (confirm(`Tem certeza que deseja excluir o usuário ${user.name}?`)) {
       this.loading = true;
-      this.dataSource.data = []; // Limpa os dados antes de excluir
 
       this.userService.deleteUser(user.id).subscribe({
         next: () => {
-          this.loadUsers();
           this.showSuccessMessage('Usuário excluído com sucesso!');
+          this.loadUsers();
         },
         error: (error) => {
           this.loading = false;
           this.showErrorMessage(error, 'Erro ao excluir usuário');
-          this.cdr.detectChanges(); // Força a detecção de mudanças
+          this.cdr.detectChanges();
         }
       });
     }

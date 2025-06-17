@@ -1,48 +1,68 @@
 /* Estilos do componente de usuário */ 
 
 .table-container {
-  max-height: calc(100vh - 250px);
+  max-height: calc(100vh - 300px);
   overflow-y: auto;
-  margin-top: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.table-responsive {
+  position: relative;
 }
 
 .mat-table {
   width: 100%;
-  background: white;
-  border-collapse: separate;
-  border-spacing: 0;
 }
 
-.mat-header-cell {
-  background-color: #f5f5f5;
-  color: #333;
-  font-weight: bold;
-  padding: 16px;
-  border-bottom: 1px solid rgba(0,0,0,.12);
-  white-space: nowrap;
+.mat-header-row {
   position: sticky;
   top: 0;
   z-index: 1;
+  background-color: white;
+}
+
+.mat-header-cell {
+  background-color: #f8f9fa;
+  color: #495057;
+  font-weight: 600;
+  padding: 16px;
 }
 
 .mat-cell {
   padding: 16px;
-  color: #666;
-  border-bottom: 1px solid rgba(0,0,0,.12);
-  min-height: 48px;
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.mat-row {
-  min-height: 48px;
-  transition: background-color 0.2s;
 }
 
 .mat-row:hover {
   background-color: #f8f9fa;
+}
+
+/* Estilo do título */
+h1 {
+  color: #ff8c2a;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin: 2rem 0;
+}
+
+/* Container principal */
+.container {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  padding: 2rem 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Botões de ação */
+.btn-outline-primary, .btn-danger {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.btn-outline-primary:hover, .btn-danger:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .mat-column-actions {
@@ -159,22 +179,6 @@
   border-color: #ff8c2a;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-h1 {
-  color: #fff;
-  margin: 0;
-  font-size: 2rem;
-  font-weight: 500;
-}
-
 h2 {
   color: #333;
   margin: 0;
@@ -215,4 +219,14 @@ button[mat-raised-button] {
 
 .table-container::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+/* Mensagens de estado */
+.text-muted {
+  color: #6c757d !important;
+}
+
+/* Ajustes para o botão de novo usuário */
+.btn-success {
+  margin-bottom: 1rem;
 } 

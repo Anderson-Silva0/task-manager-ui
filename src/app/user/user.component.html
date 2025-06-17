@@ -1,5 +1,6 @@
-<h1 class="text-center text-white my-3">Gerenciamento de Usuários</h1>
-<div class="container py-3 rounded">
+<h1 class="text-center">{{ titulo }}</h1>
+
+<div class="container">
     <div class="row d-flex">
         <div class="col-md-12">
             <button class="btn btn-success pull-right mb-3" (click)="openUserForm()" [disabled]="loading">
@@ -32,7 +33,7 @@
 
     <div class="table-container" *ngIf="!error && !loading && dataSource.data.length > 0">
         <div class="table-responsive">
-            <table mat-table [dataSource]="dataSource" class="w-100 mat-elevation-z2">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
                 <!-- Nome Column -->
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef>Nome</th>
@@ -72,8 +73,8 @@
                     </td>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="mat-header-row"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="mat-row"></tr>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
         </div>
     </div>
