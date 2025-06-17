@@ -22,7 +22,7 @@ import { TaskComponent } from './task/task.component';
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 import { BtnEdicaoTaskComponent } from './task/btn-edit-task/btn-edit-task.component';
 import { BtnNovoTaskComponent } from './task/btn-new-task/btn-new-task.component';
-import { BtnExcluirTaskComponent } from './task/btn-delete-task/btn-delete-task.component';
+import { BtnExcluirTaskModule } from './task/btn-delete-task/btn-delete-task.module';
 import { ListaComponent } from './lista/lista.component';
 import { UserModule } from './user/user.module';
 
@@ -33,7 +33,6 @@ import { UserModule } from './user/user.module';
     ConfirmDialogComponent,
     BtnEdicaoTaskComponent,
     BtnNovoTaskComponent,
-    BtnExcluirTaskComponent,
     ListaComponent
   ],
   imports: [
@@ -55,7 +54,8 @@ import { UserModule } from './user/user.module';
     RouterModule,
     ModalModule.forRoot(),
     NavbarModule,
-    UserModule
+    UserModule,
+    BtnExcluirTaskModule
   ],
   providers: [],
   bootstrap: [AppComponent]

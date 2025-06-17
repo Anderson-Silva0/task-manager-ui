@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { User, UserRequest, UserResponse } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { UserFormComponent } from './user-form/user-form.component';
+import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-user',
@@ -110,20 +111,29 @@ export class UserComponent implements OnInit {
   }
 
   confirmDelete(user: UserResponse): void {
-    if (confirm(`Tem certeza que deseja excluir o usuário ${user.name}?`)) {
-      this.loading = true;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirmar Exclusão',
+        message: `Tem certeza que deseja excluir o usuário ${user.name}?`
+      }
+    });
 
-      this.userService.deleteUser(user.id).subscribe({
-        next: () => {
-          this.showSuccessMessage('Usuário excluído com sucesso!');
-          this.loadUsers();
-        },
-        error: (error) => {
-          this.loading = false;
-          this.showErrorMessage(error, 'Erro ao excluir usuário');
-          this.cdr.detectChanges();
-        }
-      });
-    }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loading = true;
+        this.userService.deleteUser(user.id).subscribe({
+          next: () => {
+            this.showSuccessMessage('Usuário excluído com sucesso!');
+            this.loadUsers();
+          },
+          error: (error) => {
+            this.loading = false;
+            this.showErrorMessage(error, 'Erro ao excluir usuário');
+            this.cdr.detectChanges();
+          }
+        });
+      }
+    });
   }
 } 

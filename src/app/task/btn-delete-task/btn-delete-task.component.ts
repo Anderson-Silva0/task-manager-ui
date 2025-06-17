@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-btn-excluir-task',
@@ -15,25 +16,24 @@ export class BtnExcluirTaskComponent implements OnInit {
   @Input() indiceTask: number = 0;
   @Output() removeTaskEvent = new EventEmitter<number>();
 
-  modalRef?: BsModalRef;
-
-  constructor(
-    private modalService: BsModalService,
-  ) {}
+  constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
   }
   
-  abrirModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
-  }
+  abrirModal(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirmar Exclusão',
+        message: `Tem certeza que deseja excluir a tarefa "${this.nomeTask}"?`
+      }
+    });
 
-  confirma() {
-    this.modalRef?.hide();
-    this.removeTaskEvent.emit(this.indiceTask);
-  }
-
-  cancela() {
-    this.modalRef?.hide();
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.removeTaskEvent.emit(this.indiceTask);
+      }
+    });
   }
 } 
