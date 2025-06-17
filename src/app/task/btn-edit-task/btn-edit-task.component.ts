@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./btn-edit-task.component.css']
 })
 export class BtnEdicaoTaskComponent implements OnInit {
-  TaskStatus = TaskStatus; // Para usar no template
+  TaskStatus = TaskStatus;
   statusOptions = Object.values(TaskStatus);
 
   @Input() estilo: string = '';

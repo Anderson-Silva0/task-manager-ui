@@ -87,7 +87,6 @@ export class BtnNovoTaskComponent implements OnInit {
     
     if (error.error?.messages && error.error.messages.length > 0) {
       errorMessage = error.error.messages[0];
-      // Mapeia as mensagens de erro do backend para os campos do formulário
       if (error.error.messages.length > 1) {
         this.backendErrors = {};
         error.error.messages.forEach((msg: string) => {

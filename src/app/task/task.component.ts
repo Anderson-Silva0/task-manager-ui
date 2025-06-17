@@ -10,13 +10,12 @@ import { UserResponse } from '../models/user.model';
   styleUrls: ['./task.component.css']
 })
 export class TaskComponent implements OnInit {
-  TaskStatus = TaskStatus; // Para usar no template
-  userName: string = '';
-
-  @Input() task: Task = new Task();
+  @Input() task!: Task;
   @Input() taskIndex: number = 0;
   @Output() notificaTaskExcluidaEvent = new EventEmitter<number>();
   @Output() atualizaStatusEvent = new EventEmitter<{indice: number, status: TaskStatus}>();
+  TaskStatus = TaskStatus;
+  userName: string = '';
 
   constructor(private userService: UserService) { }
 
@@ -48,11 +47,24 @@ export class TaskComponent implements OnInit {
   atualizaTask(task: Task) {
     if (task) {
       this.task = task;
-      this.loadUserName(); // Recarrega o nome do usuário quando a tarefa é atualizada
+      this.loadUserName();
     }
   }
 
   removeTask(indice: number) {
     this.notificaTaskExcluidaEvent.emit(indice);
+  }
+
+  getStatusLabel(status: TaskStatus): string {
+    switch (status) {
+      case TaskStatus.PENDENTE:
+        return 'Pendente';
+      case TaskStatus.EM_ANDAMENTO:
+        return 'Em Andamento';
+      case TaskStatus.CONCLUIDO:
+        return 'Concluído';
+      default:
+        return '';
+    }
   }
 }
