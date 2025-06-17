@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { User, UserRequest, UserResponse } from '../models/user.model';
+import { UserResponse } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { UserFormComponent } from './user-form/user-form.component';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
