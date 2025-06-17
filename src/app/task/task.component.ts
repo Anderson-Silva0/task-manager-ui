@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import Task from './task.model';
+import Task from '../models/task.model';
 import { TaskStatus } from './task-status.enum';
-import { UserService } from '../user/user.service';
+import { UserService } from '../services/user.service';
 import { UserResponse } from '../models/user.model';
 
 @Component({

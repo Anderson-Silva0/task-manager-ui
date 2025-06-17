@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import Task from './task.model';
-import { TaskStatus } from './task-status.enum';
+import Task from '../models/task.model';
+import { TaskStatus } from '../task/task-status.enum';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {

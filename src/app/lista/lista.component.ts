@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import Task from '../task/task.model';
+import Task from '../models/task.model';
 import { TaskStatus } from '../task/task-status.enum';
-import { TaskService } from '../task/task.service';
+import { TaskService } from '../services/task.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

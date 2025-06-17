@@ -2,7 +2,7 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    createdAt: Date;
+    createdAt: string;
 }
 
 export interface UserRequest {
@@ -14,5 +14,5 @@ export interface UserResponse {
     id: number;
     name: string;
     email: string;
-    createdAt: Date;
+    createdAt: string;
 } 

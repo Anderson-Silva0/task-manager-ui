@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { User, UserRequest, UserResponse } from '../models/user.model';
-import { UserService } from './user.service';
+import { UserService } from '../services/user.service';
 import { UserFormComponent } from './user-form/user-form.component';
 
 @Component({

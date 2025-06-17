@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { UserService } from '../../user/user.service';
+import { UserService } from '../../services/user.service';
 import { UserResponse } from '../../models/user.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
