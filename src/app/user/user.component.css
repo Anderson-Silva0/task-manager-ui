@@ -6,7 +6,7 @@ html, body {
 
 .container {
   background: #fff;
-  border-radius: 6px;
+  border-radius: 4px;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
   padding: 1rem 1.5rem;
   margin-top: 2rem;
@@ -54,7 +54,7 @@ h1 {
   color: #fff;
   font-weight: 700;
   letter-spacing: 0.5px;
-  margin: 2rem 0;
+  margin: 1.4rem 0;
 }
 
 .btn-outline-primary, .btn-danger {
