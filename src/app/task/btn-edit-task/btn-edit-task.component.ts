@@ -52,17 +52,26 @@ export class BtnEdicaoTaskComponent implements OnInit {
   atualizaTask() {
     if (this.frmEdit.valid && this.task?.id) {
       let deadline = this.frmEdit.value.deadline;
+      // Se deadline não foi alterada no input, mas existe na task original, use ela
+      if (!deadline && this.task.deadline) {
+        deadline = this.task.deadline;
+      }
       if (deadline) {
         if (typeof deadline === 'string') {
-          // deadline do input: yyyy-MM-ddTHH:mm ou yyyy-MM-ddTHH:mm:ss
-          // Garantir que tenha segundos
+          // deadline do input: yyyy-MM-ddTHH:mm ou yyyy-MM-ddTHH:mm:ss ou dd/MM/yyyy HH:mm:ss
           if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(deadline)) {
             deadline += ':00';
           } else if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(deadline)) {
-            deadline = deadline.substring(0, 19); // remove milissegundos/fuso se houver
+            deadline = deadline.substring(0, 19);
+          } else if (/^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/.test(deadline)) {
+            // dd/MM/yyyy HH:mm:ss para yyyy-MM-ddTHH:mm:ss
+            const match = deadline.match(/^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(\d{2})$/);
+            if (match) {
+              const [_, day, month, year, hour, minute, second] = match;
+              deadline = `${year}-${month}-${day}T${hour}:${minute}:${second}`;
+            }
           }
         } else if (deadline instanceof Date) {
-          // Converte para yyyy-MM-dd'T'HH:mm:ss
           const pad = (n: number) => n.toString().padStart(2, '0');
           deadline = `${deadline.getFullYear()}-${pad(deadline.getMonth()+1)}-${pad(deadline.getDate())}T${pad(deadline.getHours())}:${pad(deadline.getMinutes())}:${pad(deadline.getSeconds())}`;
         }

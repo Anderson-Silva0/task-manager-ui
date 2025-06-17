@@ -45,8 +45,8 @@
     </div>
 
     <div class="row d-flex justify-content-center" *ngIf="!error && !loading && tasks.length > 0">
-        <div class="col-md-4 mb-3 mb-sm-0" *ngFor="let task of tasks">
-            <app-task [task]="task"></app-task>
+        <div class="col-md-4 mb-3 mb-sm-0" *ngFor="let task of tasks; let i = index">
+            <app-task [task]="task" [taskIndex]="i" (notificaTaskExcluidaEvent)="removeTask($event)"></app-task>
         </div>
     </div>
 </div>

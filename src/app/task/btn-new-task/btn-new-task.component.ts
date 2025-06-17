@@ -9,6 +9,7 @@ interface TaskRequest {
   title: string;
   description: string;
   userId: number;
+  deadline?: string;
 }
 
 @Component({
@@ -40,7 +41,8 @@ export class BtnNovoTaskComponent implements OnInit {
     this.frmNew = this.formBuilder.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: [''],
-      userId: ['', [Validators.required]]
+      userId: ['', [Validators.required]],
+      deadline: [null]
     });
   }
 
@@ -72,10 +74,26 @@ export class BtnNovoTaskComponent implements OnInit {
   salvar() {
     if (this.frmNew.valid) {
       this.modalRef?.hide();
-      const taskData: TaskRequest = {
+      let deadline = this.frmNew.value.deadline;
+      if (deadline) {
+        if (typeof deadline === 'string') {
+          if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(deadline)) {
+            deadline += ':00';
+          } else if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(deadline)) {
+            deadline = deadline.substring(0, 19);
+          }
+        } else if (deadline instanceof Date) {
+          const pad = (n: number) => n.toString().padStart(2, '0');
+          deadline = `${deadline.getFullYear()}-${pad(deadline.getMonth()+1)}-${pad(deadline.getDate())}T${pad(deadline.getHours())}:${pad(deadline.getMinutes())}:${pad(deadline.getSeconds())}`;
+        }
+      } else {
+        deadline = null;
+      }
+      const taskData: any = {
         title: this.frmNew.value.title,
         description: this.frmNew.value.description,
-        userId: this.frmNew.value.userId
+        userId: this.frmNew.value.userId,
+        deadline: deadline
       };
       this.novoTaskEvent.emit(taskData);
     }
