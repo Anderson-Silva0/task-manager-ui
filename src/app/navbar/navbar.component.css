@@ -4,18 +4,27 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   padding: 0;
   margin: 0;
-  min-height: 80px;
+  min-height: 90px;
 }
 
 .navbar .container {
-  height: 80px;
+  height: 90px;
   display: flex;
   align-items: center;
 }
 
 .navbar-logo {
-  height: 50px;
+  height: 70px;
+  max-width: 120px;
   display: block;
+}
+
+.navbar-slogan {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1a3c34;
+  letter-spacing: 1px;
+  white-space: nowrap;
 }
 
 .navbar-nav {
@@ -74,7 +83,12 @@
   }
 
   .navbar-logo {
-    height: 40px;
+    height: 45px;
+    max-width: 80px;
+  }
+
+  .navbar-slogan {
+    font-size: 1rem;
   }
 
   .navbar-nav {

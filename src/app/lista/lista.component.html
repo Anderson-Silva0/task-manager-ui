@@ -26,7 +26,7 @@
             </button>
         </div>
         <div class="col-md-3 d-flex justify-content-end align-items-end">
-            <app-btn-novo-task estilo="btn btn-success px-4 py-2 fw-bold" texto="Nova Tarefa"></app-btn-novo-task>
+            <app-btn-novo-task estilo="btn btn-success px-4 py-2 fw-bold" texto="Nova Tarefa" (novoTaskEvent)="novaTask($event)"></app-btn-novo-task>
         </div>
     </div>
 
