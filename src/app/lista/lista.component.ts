@@ -3,6 +3,8 @@ import Task from '../models/task.model';
 import { TaskStatus } from '../task/task-status.enum';
 import { TaskService } from '../services/task.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserService } from '../services/user.service';
+import { UserResponse } from '../models/user.model';
 
 @Component({
   selector: 'app-lista',
@@ -12,30 +14,54 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ListaComponent implements OnInit {
   titulo: string = 'Gerenciamento de Tarefas';
   tasks: Task[] = [];
-  error: boolean = false;
+  users: UserResponse[] = [];
+  selectedStatus: TaskStatus | null = null;
+  selectedUserId: number | null = null;
+  loading = false;
+  error = false;
+  TaskStatus = TaskStatus;
 
   constructor(
     private taskService: TaskService,
+    private userService: UserService,
     private snackBar: MatSnackBar
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.loadTasks();
+    this.loadUsers();
+    this.buscar();
   }
 
-  loadTasks(): void {
+  loadUsers(): void {
+    this.userService.getUsers().subscribe({
+      next: users => this.users = users,
+      error: () => this.snackBar.open('Erro ao carregar usuários', 'Fechar', { duration: 3000 })
+    });
+  }
+
+  buscar(): void {
+    this.loading = true;
     this.error = false;
-    this.taskService.getTasks().subscribe({
-      next: (tasks) => {
+    this.taskService.getTasks(
+      this.selectedStatus || undefined,
+      this.selectedUserId || undefined
+    ).subscribe({
+      next: tasks => {
         this.tasks = tasks;
+        this.loading = false;
       },
-      error: (error) => {
+      error: () => {
         this.error = true;
-        this.tasks = [];
+        this.loading = false;
         this.snackBar.open('Erro ao carregar tarefas', 'Fechar', { duration: 3000 });
-        console.error('Erro ao carregar tarefas:', error);
       }
     });
+  }
+
+  limparFiltros(): void {
+    this.selectedStatus = null;
+    this.selectedUserId = null;
+    this.buscar();
   }
 
   novaTask(task: Task) {
