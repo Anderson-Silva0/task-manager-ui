@@ -14,7 +14,7 @@
                 </small>
                 <br>
                 <small class="text-muted" *ngIf="task.deadline">
-                    <i class="fa fa-clock"></i> Prazo: {{ task.deadline | date:'dd/MM/yyyy HH:mm' }}
+                    <i class="fa fa-clock"></i> Data limite: {{ formatDeadline(task.deadline) }}
                 </small>
             </div>
             

@@ -6,6 +6,6 @@ export default class Task {
     description: string = '';
     status?: TaskStatus;
     createdAt?: string;
-    deadline?: Date;
+    deadline?: string | Date;
     userId: number = 0;
 }

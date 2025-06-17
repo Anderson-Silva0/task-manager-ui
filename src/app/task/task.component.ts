@@ -67,4 +67,32 @@ export class TaskComponent implements OnInit {
         return '';
     }
   }
+
+  formatDeadline(deadline: string | Date): string {
+    if (!deadline) return '';
+    let dateObj: Date;
+    if (typeof deadline === 'string') {
+      // Se vier no formato dd/MM/yyyy HH:mm:ss
+      const match = deadline.match(/^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(\d{2})$/);
+      if (match) {
+        const [_, day, month, year, hour, minute, second] = match;
+        dateObj = new Date(
+          Number(year),
+          Number(month) - 1,
+          Number(day),
+          Number(hour),
+          Number(minute),
+          Number(second)
+        );
+      } else {
+        // Tenta converter direto
+        dateObj = new Date(deadline);
+      }
+    } else {
+      dateObj = deadline;
+    }
+    // Retorna no formato dd/MM/yyyy HH:mm
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    return `${pad(dateObj.getDate())}/${pad(dateObj.getMonth()+1)}/${dateObj.getFullYear()} ${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}`;
+  }
 }
