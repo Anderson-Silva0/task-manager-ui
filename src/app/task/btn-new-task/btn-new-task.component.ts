@@ -27,6 +27,7 @@ export class BtnNovoTaskComponent implements OnInit {
   users: UserResponse[] = [];
   error: boolean = false;
   backendErrors: { [key: string]: string } = {};
+  minDeadline: string = '';
 
   constructor(
     private modalService: BsModalService,
@@ -48,6 +49,9 @@ export class BtnNovoTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUsers();
+    const now = new Date();
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    this.minDeadline = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
   }
 
   loadUsers(): void {
@@ -73,27 +77,41 @@ export class BtnNovoTaskComponent implements OnInit {
 
   salvar() {
     if (this.frmNew.valid) {
-      this.modalRef?.hide();
       let deadline = this.frmNew.value.deadline;
       if (deadline) {
+        let deadlineDate: Date;
         if (typeof deadline === 'string') {
-          if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(deadline)) {
-            deadline += ':00';
-          } else if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(deadline)) {
-            deadline = deadline.substring(0, 19);
+          deadlineDate = new Date(deadline.length === 16 ? deadline+':00' : deadline);
+        } else {
+          deadlineDate = deadline;
+        }
+        if (deadlineDate < new Date()) {
+          this.modalRef?.hide();
+          this.snackBar.open('A data limite não pode ser menor que a data/hora atual.', 'Fechar', { duration: 3000 });
+          return;
+        }
+      }
+      this.modalRef?.hide();
+      let deadlineFormatted = this.frmNew.value.deadline;
+      if (deadlineFormatted) {
+        if (typeof deadlineFormatted === 'string') {
+          if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(deadlineFormatted)) {
+            deadlineFormatted += ':00';
+          } else if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(deadlineFormatted)) {
+            deadlineFormatted = deadlineFormatted.substring(0, 19);
           }
-        } else if (deadline instanceof Date) {
+        } else if (deadlineFormatted instanceof Date) {
           const pad = (n: number) => n.toString().padStart(2, '0');
-          deadline = `${deadline.getFullYear()}-${pad(deadline.getMonth()+1)}-${pad(deadline.getDate())}T${pad(deadline.getHours())}:${pad(deadline.getMinutes())}:${pad(deadline.getSeconds())}`;
+          deadlineFormatted = `${deadlineFormatted.getFullYear()}-${pad(deadlineFormatted.getMonth()+1)}-${pad(deadlineFormatted.getDate())}T${pad(deadlineFormatted.getHours())}:${pad(deadlineFormatted.getMinutes())}:${pad(deadlineFormatted.getSeconds())}`;
         }
       } else {
-        deadline = null;
+        deadlineFormatted = null;
       }
       const taskData: any = {
         title: this.frmNew.value.title,
         description: this.frmNew.value.description,
         userId: this.frmNew.value.userId,
-        deadline: deadline
+        deadline: deadlineFormatted
       };
       this.novoTaskEvent.emit(taskData);
     }

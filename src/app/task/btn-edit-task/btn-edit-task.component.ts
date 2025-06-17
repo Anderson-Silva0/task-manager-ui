@@ -23,6 +23,7 @@ export class BtnEdicaoTaskComponent implements OnInit {
 
   modalRef?: BsModalRef;
   frmEdit!: FormGroup;
+  minDeadline: string = '';
 
   constructor(
     private modalService: BsModalService,
@@ -43,6 +44,10 @@ export class BtnEdicaoTaskComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Define o mínimo para o input de data limite
+    const now = new Date();
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    this.minDeadline = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
   }
 
   get f() {
@@ -51,11 +56,29 @@ export class BtnEdicaoTaskComponent implements OnInit {
 
   atualizaTask() {
     if (this.frmEdit.valid && this.task?.id) {
+      // Validação extra para deadline
       let deadline = this.frmEdit.value.deadline;
+      if (deadline) {
+        let deadlineDate: Date;
+        if (typeof deadline === 'string') {
+          deadlineDate = new Date(deadline.length === 16 ? deadline+':00' : deadline);
+        } else {
+          deadlineDate = deadline;
+        }
+        if (deadlineDate < new Date()) {
+          this.modalRef?.hide();
+          this.snackBar.open('A data limite não pode ser menor que a data/hora atual.', 'Fechar', { duration: 3000 });
+          return;
+        }
+      }
+      if (deadline === null) {
+        deadline = undefined;
+      }
       // Se deadline não foi alterada no input, mas existe na task original, use ela
       if (!deadline && this.task.deadline) {
         deadline = this.task.deadline;
       }
+      // Sempre converter deadline para o formato do Spring Boot se existir
       if (deadline) {
         if (typeof deadline === 'string') {
           // deadline do input: yyyy-MM-ddTHH:mm ou yyyy-MM-ddTHH:mm:ss ou dd/MM/yyyy HH:mm:ss
@@ -75,8 +98,6 @@ export class BtnEdicaoTaskComponent implements OnInit {
           const pad = (n: number) => n.toString().padStart(2, '0');
           deadline = `${deadline.getFullYear()}-${pad(deadline.getMonth()+1)}-${pad(deadline.getDate())}T${pad(deadline.getHours())}:${pad(deadline.getMinutes())}:${pad(deadline.getSeconds())}`;
         }
-      } else {
-        deadline = null;
       }
       const task = {
         title: this.frmEdit.value.title,
@@ -110,9 +131,16 @@ export class BtnEdicaoTaskComponent implements OnInit {
       let deadlineValue = null;
       if (this.task.deadline) {
         if (typeof this.task.deadline === 'string') {
-          // Se vier como 'yyyy-MM-ddTHH:mm:ss' ou 'yyyy-MM-ddTHH:mm:ss.SSSZ', converter para 'yyyy-MM-ddTHH:mm'
-          const match = this.task.deadline.match(/^([0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2})/);
-          deadlineValue = match ? match[1] : this.task.deadline;
+          // dd/MM/yyyy HH:mm:ss
+          const matchBR = this.task.deadline.match(/^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(\d{2})$/);
+          if (matchBR) {
+            const [_, day, month, year, hour, minute] = matchBR;
+            deadlineValue = `${year}-${month}-${day}T${hour}:${minute}`;
+          } else {
+            // yyyy-MM-ddTHH:mm:ss ou yyyy-MM-ddTHH:mm
+            const matchISO = this.task.deadline.match(/^([0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2})/);
+            deadlineValue = matchISO ? matchISO[1] : this.task.deadline;
+          }
         } else if (this.task.deadline instanceof Date) {
           const pad = (n: number) => n.toString().padStart(2, '0');
           deadlineValue = `${this.task.deadline.getFullYear()}-${pad(this.task.deadline.getMonth()+1)}-${pad(this.task.deadline.getDate())}T${pad(this.task.deadline.getHours())}:${pad(this.task.deadline.getMinutes())}`;
