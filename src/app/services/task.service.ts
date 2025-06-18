@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import Task from '../models/task.model';
 import { TaskStatus } from '../task/task-status.enum';
+import { environment } from '../../environments/environment.docker';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
-  private readonly apiUrl = 'http://localhost:8082/api/tasks';
+  private readonly apiUrl = `${environment.taskServiceUrl}/api/tasks`;
 
   constructor(private http: HttpClient) {}
 

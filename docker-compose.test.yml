@@ -1,0 +1,20 @@
+services:
+  cypress-standalone:
+    build:
+      context: .
+      dockerfile: Dockerfile.cypress
+    container_name: cypress-standalone
+    environment:
+      - CYPRESS_baseUrl=http://angular-app:4200
+    volumes:
+      - ./cypress:/app/cypress
+      - ./cypress.config.js:/app/cypress.config.js
+      - ./cypress-results:/app/cypress-results
+    networks:
+      - backend
+    command: npx cypress run --spec "cypress/e2e/**/*.cy.js" --reporter junit --reporter-options "mochaFile=cypress-results/results.xml,toConsole=true"
+
+networks:
+  backend:
+    external: true
+    name: task-manager-system_backend 
