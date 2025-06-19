@@ -4,7 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:host": "ng serve --configuration host",
+    "start:docker": "ng serve --configuration docker",
     "build": "ng build",
+    "build:host": "ng build --configuration host",
+    "build:docker": "ng build --configuration docker",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   taskServiceUrl: 'http://localhost:8082',
   userServiceUrl: 'http://localhost:8081'
-};
+}; 

@@ -77,6 +77,20 @@
                   "with": "src/environments/environment.docker.ts"
                 }
               ]
+            },
+            "host": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.host.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -92,6 +106,9 @@
             },
             "docker": {
               "browserTarget": "lista-tarefa:build:docker"
+            },
+            "host": {
+              "browserTarget": "lista-tarefa:build:host"
             }
           },
           "defaultConfiguration": "development"

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import Task from '../models/task.model';
 import { TaskStatus } from '../task/task-status.enum';
-import { environment } from '../../environments/environment.docker';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
