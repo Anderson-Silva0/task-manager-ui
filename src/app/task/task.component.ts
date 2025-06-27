@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import Task from '../models/task.model';
 import { TaskStatus } from './task-status.enum';
 import { UserService } from '../services/user.service';
-import { UserResponse } from '../models/user.model';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-task',
@@ -13,7 +13,6 @@ export class TaskComponent implements OnInit {
   @Input() task!: Task;
   @Input() taskIndex: number = 0;
   @Output() notificaTaskExcluidaEvent = new EventEmitter<number>();
-  @Output() atualizaStatusEvent = new EventEmitter<{indice: number, status: TaskStatus}>();
   TaskStatus = TaskStatus;
   userName: string = '';
 
@@ -26,7 +25,7 @@ export class TaskComponent implements OnInit {
   private loadUserName(): void {
     if (this.task?.userId) {
       this.userService.getUserById(this.task.userId).subscribe({
-        next: (user: UserResponse) => {
+        next: (user: User) => {
           this.userName = user.name;
         },
         error: (error) => {
@@ -34,13 +33,6 @@ export class TaskComponent implements OnInit {
           this.userName = 'Usuário não encontrado';
         }
       });
-    }
-  }
-
-  atualizarStatus(status: TaskStatus) {
-    if (this.task) {
-      this.task.status = status;
-      this.atualizaStatusEvent.emit({indice: this.taskIndex, status: status});
     }
   }
 

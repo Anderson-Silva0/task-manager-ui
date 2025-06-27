@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@an
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { UserService } from '../../services/user.service';
-import { UserResponse } from '../../models/user.model';
+import { User } from '../../models/user.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface TaskRequest {
@@ -24,7 +24,7 @@ export class BtnNovoTaskComponent implements OnInit {
 
   modalRef?: BsModalRef;
   frmNew!: FormGroup;
-  users: UserResponse[] = [];
+  users: User[] = [];
   error: boolean = false;
   backendErrors: { [key: string]: string } = {};
   minDeadline: string = '';

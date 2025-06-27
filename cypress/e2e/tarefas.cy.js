@@ -44,19 +44,35 @@ describe("Testes de Tarefas", () => {
     const timestamp = Date.now();
     const novoTitulo = `Título Editado ${timestamp}`;
 
-    cy.get("button.btn-outline-primary").first().click();
+    cy.get('.task-status .badge')
+      .not(':contains("Concluído")')
+      .first()
+      .parents('.card')
+      .within(() => {
+        cy.get('button.btn-outline-primary').click();
+      });
+
     cy.get('input[formControlName="title"]').clear().type(novoTitulo);
     cy.get('select[formControlName="status"]').select("CONCLUIDO");
+
     cy.get('button[type="submit"]').click();
+
     cy.get(".card-title").should("contain", novoTitulo);
+
     cy.get(".badge.bg-success").should("contain", "Concluído");
   });
 
+
   it("não deve permitir edição de tarefa com status concluído", () => {
-    cy.get("button.btn-outline-primary").first().click();
-    cy.contains("Não é possível editar tarefas concluídas").should(
-      "be.visible"
-    );
+    cy.get('.task-status .badge')
+      .contains("Concluído")
+      .first()
+      .parents('.card')
+      .within(() => {
+        cy.get("button.btn-outline-primary").click();
+      });
+
+    cy.contains("Não é possível editar tarefas concluídas").should("be.visible");
   });
 
   it("Delete - deve excluir uma tarefa", () => {

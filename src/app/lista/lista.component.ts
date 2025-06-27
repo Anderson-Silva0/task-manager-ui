@@ -4,7 +4,7 @@ import { TaskStatus } from '../task/task-status.enum';
 import { TaskService } from '../services/task.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../services/user.service';
-import { UserResponse } from '../models/user.model';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-lista',
@@ -14,7 +14,7 @@ import { UserResponse } from '../models/user.model';
 export class ListaComponent implements OnInit {
   titulo: string = 'Gerenciamento de Tarefas';
   tasks: Task[] = [];
-  users: UserResponse[] = [];
+  users: User[] = [];
   selectedStatus: TaskStatus | null = null;
   selectedUserId: number | null = null;
   loading = false;

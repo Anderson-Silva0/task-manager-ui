@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { UserResponse } from '../models/user.model';
+import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { UserFormComponent } from './user-form/user-form.component';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
@@ -13,7 +13,7 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  dataSource = new MatTableDataSource<UserResponse>([]);
+  dataSource = new MatTableDataSource<User>([]);
   error: boolean = false;
   loading: boolean = false;
   displayedColumns: string[] = ['name', 'email', 'createdAt', 'actions'];
@@ -76,7 +76,7 @@ export class UserComponent implements OnInit {
     });
   }
 
-  openUserForm(user?: UserResponse): void {
+  openUserForm(user?: User): void {
     const dialogRef = this.dialog.open(UserFormComponent, {
       width: '400px',
       data: user || {}
@@ -86,7 +86,7 @@ export class UserComponent implements OnInit {
       if (result) {
         this.loading = true;
 
-        const request$ = user 
+        const request$ = user && user.id
           ? this.userService.updateUser(user.id, result)
           : this.userService.createUser(result);
 
@@ -110,7 +110,7 @@ export class UserComponent implements OnInit {
     });
   }
 
-  confirmDelete(user: UserResponse): void {
+  confirmDelete(user: User): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: {
@@ -120,19 +120,22 @@ export class UserComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+
       if (result) {
         this.loading = true;
-        this.userService.deleteUser(user.id).subscribe({
-          next: () => {
-            this.showSuccessMessage('Usuário excluído com sucesso!');
-            this.loadUsers();
-          },
-          error: (error) => {
-            this.loading = false;
-            this.showErrorMessage(error, 'Erro ao excluir usuário');
-            this.cdr.detectChanges();
-          }
-        });
+        if (user && user.id) {
+          this.userService.deleteUser(user.id).subscribe({
+            next: () => {
+              this.showSuccessMessage('Usuário excluído com sucesso!');
+              this.loadUsers();
+            },
+            error: (error) => {
+              this.loading = false;
+              this.showErrorMessage(error, 'Erro ao excluir usuário');
+              this.cdr.detectChanges();
+            }
+          });
+        }
       }
     });
   }
