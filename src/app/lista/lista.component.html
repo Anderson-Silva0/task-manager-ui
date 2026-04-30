@@ -1,52 +1,62 @@
 <h1 class="text-center text-white my-4">{{ titulo }}</h1>
 <div class="container py-4 rounded">
-    <div class="row mb-3 align-items-end g-3" style="margin-bottom: 2rem !important;">
-        <div class="col-md-3">
-            <label for="statusFilter" class="form-label text-white">Status</label>
-            <select id="statusFilter" class="form-select" [(ngModel)]="selectedStatus">
-                <option [ngValue]="null">Todos</option>
-                <option [value]="TaskStatus.PENDENTE">Pendente</option>
-                <option [value]="TaskStatus.EM_ANDAMENTO">Em Andamento</option>
-                <option [value]="TaskStatus.CONCLUIDO">Concluído</option>
-            </select>
-        </div>
-        <div class="col-md-3">
-            <label for="userFilter" class="form-label text-white">Usuário</label>
-            <select id="userFilter" class="form-select" [(ngModel)]="selectedUserId">
-                <option [ngValue]="null">Todos</option>
-                <option *ngFor="let user of users" [value]="user.id">{{ user.name }}</option>
-            </select>
-        </div>
-        <div class="col-md-3 d-flex gap-2 align-items-end">
-            <button class="btn btn-primary w-100" (click)="buscar()" [disabled]="loading">
-                <i class="fa fa-search"></i> Buscar
-            </button>
-            <button class="btn btn-secondary w-100" (click)="limparFiltros()" [disabled]="loading">
-                <i class="fa fa-times"></i> Limpar
-            </button>
-        </div>
-        <div class="col-md-3 d-flex justify-content-end align-items-end">
-            <app-btn-novo-task estilo="btn btn-success px-4 py-2 fw-bold" texto="Nova Tarefa" (novoTaskEvent)="novaTask($event)"></app-btn-novo-task>
-        </div>
+  <div class="row mb-3 align-items-end g-3" style="margin-bottom: 2rem !important;">
+    <div class="col-md-3">
+      <label for="statusFilter" class="form-label text-white">Status</label>
+      <select id="statusFilter" class="form-select" [(ngModel)]="selectedStatus">
+        <option [ngValue]="null">Todos</option>
+        <option [value]="TaskStatus.PENDENTE">Pendente</option>
+        <option [value]="TaskStatus.EM_ANDAMENTO">Em Andamento</option>
+        <option [value]="TaskStatus.CONCLUIDO">Concluído</option>
+      </select>
     </div>
+    <div class="col-md-3">
+      <label for="userFilter" class="form-label text-white">Usuário</label>
+      <select id="userFilter" class="form-select" [(ngModel)]="selectedUserId">
+        <option [ngValue]="null">Todos</option>
+        @for (user of users; track user) {
+          <option [value]="user.id">{{ user.name }}</option>
+        }
+      </select>
+    </div>
+    <div class="col-md-3 d-flex gap-2 align-items-end">
+      <button class="btn btn-primary w-100" (click)="buscar()" [disabled]="loading">
+        <i class="fa fa-search"></i> Buscar
+      </button>
+      <button class="btn btn-secondary w-100" (click)="limparFiltros()" [disabled]="loading">
+        <i class="fa fa-times"></i> Limpar
+      </button>
+    </div>
+    <div class="col-md-3 d-flex justify-content-end align-items-end">
+      <app-btn-novo-task estilo="btn btn-success px-4 py-2 fw-bold" texto="Nova Tarefa" (novoTaskEvent)="novaTask($event)"></app-btn-novo-task>
+    </div>
+  </div>
 
-    <div *ngIf="loading" class="row d-flex justify-content-center">
-        <div class="col-md-8 text-center text-muted py-5">
-            <i class="fa fa-spinner fa-spin fa-2x mb-3"></i>
-            <p class="mb-0">Carregando tarefas...</p>
-        </div>
+  @if (loading) {
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-8 text-center text-muted py-5">
+        <i class="fa fa-spinner fa-spin fa-2x mb-3"></i>
+        <p class="mb-0">Carregando tarefas...</p>
+      </div>
     </div>
+  }
 
-    <div *ngIf="error || (!loading && tasks.length === 0)" class="row d-flex justify-content-center">
-        <div class="col-md-8 text-center text-muted py-5">
-            <i class="fa fa-tasks fa-2x mb-3"></i>
-            <p class="mb-0">Nenhuma tarefa encontrada.</p>
-        </div>
+  @if (error || (!loading && tasks.length === 0)) {
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-8 text-center text-muted py-5">
+        <i class="fa fa-tasks fa-2x mb-3"></i>
+        <p class="mb-0">Nenhuma tarefa encontrada.</p>
+      </div>
     </div>
+  }
 
-    <div class="row d-flex justify-content-center" *ngIf="!error && !loading && tasks.length > 0">
-        <div class="col-md-4 mb-3 mb-sm-0" *ngFor="let task of tasks; let i = index">
-            <app-task [task]="task" [taskIndex]="i" (notificaTaskExcluidaEvent)="removeTask($event)"></app-task>
+  @if (!error && !loading && tasks.length > 0) {
+    <div class="row d-flex justify-content-center">
+      @for (task of tasks; track task; let i = $index) {
+        <div class="col-md-4 mb-3 mb-sm-0">
+          <app-task [task]="task" [taskIndex]="i" (notificaTaskExcluidaEvent)="removeTask($event)"></app-task>
         </div>
+      }
     </div>
+  }
 </div>

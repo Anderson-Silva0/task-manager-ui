@@ -5,11 +5,17 @@ import { TaskService } from '../services/task.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { BtnNovoTaskComponent } from '../task/btn-new-task/btn-new-task.component';
+import { TaskComponent } from '../task/task.component';
 
 @Component({
   selector: 'app-lista',
   templateUrl: './lista.component.html',
-  styleUrls: ['./lista.component.css']
+  styleUrls: ['./lista.component.css'],
+  standalone: true,
+  imports: [CommonModule, FormsModule, BtnNovoTaskComponent, TaskComponent]
 })
 export class ListaComponent implements OnInit {
   titulo: string = 'Gerenciamento de Tarefas';

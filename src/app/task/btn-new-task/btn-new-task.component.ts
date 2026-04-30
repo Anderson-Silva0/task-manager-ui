@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
 
 interface TaskRequest {
   title: string;
@@ -15,7 +16,9 @@ interface TaskRequest {
 @Component({
   selector: 'app-btn-novo-task',
   templateUrl: './btn-new-task.component.html',
-  styleUrls: ['./btn-new-task.component.css']
+  styleUrls: ['./btn-new-task.component.css'],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, ModalModule]
 })
 export class BtnNovoTaskComponent implements OnInit {
   @Input() estilo: string = '';
@@ -23,7 +26,7 @@ export class BtnNovoTaskComponent implements OnInit {
   @Output() novoTaskEvent = new EventEmitter<TaskRequest>();
 
   modalRef?: BsModalRef;
-  frmNew!: FormGroup;
+  frmNew!: UntypedFormGroup;
   users: User[] = [];
   error: boolean = false;
   backendErrors: { [key: string]: string } = {};
@@ -31,7 +34,7 @@ export class BtnNovoTaskComponent implements OnInit {
 
   constructor(
     private modalService: BsModalService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private userService: UserService,
     private snackBar: MatSnackBar
   ) {

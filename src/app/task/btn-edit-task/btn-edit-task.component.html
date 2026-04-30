@@ -1,7 +1,7 @@
 <button class="btn btn-sm btn-outline-primary" (click)="abrirModal(template)">
-    <i class="fa fa-pencil"></i> {{ texto }}
+  <i class="fa fa-pencil"></i> {{ texto }}
 </button>
-  
+
 <ng-template #template>
   <form [formGroup]="frmEdit" (ngSubmit)="atualizaTask()">
     <div class="modal-header">
@@ -22,77 +22,89 @@
           id="title"
           formControlName="title"
           [ngClass]="{'is-invalid': frmEdit.get('title')?.invalid && frmEdit.get('title')?.touched}"
-        />
-        <div class="invalid-feedback" *ngIf="frmEdit.get('title')?.errors?.['required']">
-          Título é obrigatório
+          />
+          @if (frmEdit.get('title')?.errors?.['required']) {
+            <div class="invalid-feedback">
+              Título é obrigatório
+            </div>
+          }
+          @if (frmEdit.get('title')?.errors?.['minlength']) {
+            <div class="invalid-feedback">
+              Título deve ter no mínimo 3 caracteres
+            </div>
+          }
         </div>
-        <div class="invalid-feedback" *ngIf="frmEdit.get('title')?.errors?.['minlength']">
-          Título deve ter no mínimo 3 caracteres
-        </div>
-      </div>
 
-      <div class="mb-3">
-        <label for="description" class="form-label">Descrição</label>
-        <textarea
-          class="form-control"
-          id="description"
-          rows="3"
-          formControlName="description"
-          [ngClass]="{'is-invalid': frmEdit.get('description')?.invalid && frmEdit.get('description')?.touched}"
-        ></textarea>
-        <div class="invalid-feedback" *ngIf="frmEdit.get('description')?.errors?.['required']">
-          Descrição é obrigatória
+        <div class="mb-3">
+          <label for="description" class="form-label">Descrição</label>
+          <textarea
+            class="form-control"
+            id="description"
+            rows="3"
+            formControlName="description"
+            [ngClass]="{'is-invalid': frmEdit.get('description')?.invalid && frmEdit.get('description')?.touched}"
+          ></textarea>
+          @if (frmEdit.get('description')?.errors?.['required']) {
+            <div class="invalid-feedback">
+              Descrição é obrigatória
+            </div>
+          }
+          @if (frmEdit.get('description')?.errors?.['minlength']) {
+            <div class="invalid-feedback">
+              Descrição deve ter no mínimo 5 caracteres
+            </div>
+          }
         </div>
-        <div class="invalid-feedback" *ngIf="frmEdit.get('description')?.errors?.['minlength']">
-          Descrição deve ter no mínimo 5 caracteres
+
+        <div class="mb-3">
+          <label for="status" class="form-label">Status</label>
+          <select
+            class="form-select"
+            id="status"
+            formControlName="status"
+            [ngClass]="{'is-invalid': frmEdit.get('status')?.invalid && frmEdit.get('status')?.touched}"
+            >
+            @for (status of statusOptions; track status) {
+              <option [value]="status">
+                {{ getStatusLabel(status) }}
+              </option>
+            }
+          </select>
+          @if (frmEdit.get('status')?.errors?.['required']) {
+            <div class="invalid-feedback">
+              Status é obrigatório
+            </div>
+          }
         </div>
-      </div>
 
-      <div class="mb-3">
-        <label for="status" class="form-label">Status</label>
-        <select
-          class="form-select"
-          id="status"
-          formControlName="status"
-          [ngClass]="{'is-invalid': frmEdit.get('status')?.invalid && frmEdit.get('status')?.touched}"
-        >
-          <option *ngFor="let status of statusOptions" [value]="status">
-            {{ getStatusLabel(status) }}
-          </option>
-        </select>
-        <div class="invalid-feedback" *ngIf="frmEdit.get('status')?.errors?.['required']">
-          Status é obrigatório
+        <div class="mb-3">
+          <label for="deadline" class="form-label">Data limite (opcional)</label>
+          <input
+            type="datetime-local"
+            class="form-control"
+            id="deadline"
+            formControlName="deadline"
+            [min]="minDeadline"
+            >
+          </div>
         </div>
-      </div>
 
-      <div class="mb-3">
-        <label for="deadline" class="form-label">Data limite (opcional)</label>
-        <input
-          type="datetime-local"
-          class="form-control"
-          id="deadline"
-          formControlName="deadline"
-          [min]="minDeadline"
-        >
-      </div>
-    </div>
-
-    <div class="modal-footer">
-      <button
-        type="button"
-        class="btn btn-secondary"
-        aria-label="Close"
-        (click)="modalRef?.hide()"
-      >
-        <i class="fa fa-remove"></i> Cancelar
-      </button>
-      <button
-        type="submit"
-        class="btn btn-primary"
-        [disabled]="frmEdit.invalid"
-      >
-        <i class="fa fa-save"></i> Salvar
-      </button>
-    </div>
-  </form>
-</ng-template> 
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            aria-label="Close"
+            (click)="modalRef?.hide()"
+            >
+            <i class="fa fa-remove"></i> Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="frmEdit.invalid"
+            >
+            <i class="fa fa-save"></i> Salvar
+          </button>
+        </div>
+      </form>
+    </ng-template>

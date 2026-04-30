@@ -1,17 +1,16 @@
-FROM node:18-alpine
+FROM node:22-alpine
 
 WORKDIR /app
 
-RUN apk add --no-cache curl
-
+# Install dependencies
 COPY package*.json ./
-COPY angular.json ./
-COPY tsconfig*.json ./
-
 RUN npm ci
 
+# Copy source
 COPY . .
 
+# Angular default port
 EXPOSE 4200
 
-CMD ["npm", "start", "--", "--configuration=docker", "--host", "0.0.0.0", "--disable-host-check"] 
+# Start the application
+CMD ["npm", "start", "--", "--configuration=docker", "--host", "0.0.0.0", "--disable-host-check"]

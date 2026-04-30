@@ -3,11 +3,16 @@ import Task from '../models/task.model';
 import { TaskStatus } from './task-status.enum';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
+import { CommonModule } from '@angular/common';
+import { BtnEdicaoTaskComponent } from './btn-edit-task/btn-edit-task.component';
+import { BtnExcluirTaskComponent } from './btn-delete-task/btn-delete-task.component';
 
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
-  styleUrls: ['./task.component.css']
+  styleUrls: ['./task.component.css'],
+  standalone: true,
+  imports: [CommonModule, BtnEdicaoTaskComponent, BtnExcluirTaskComponent]
 })
 export class TaskComponent implements OnInit {
   @Input() task!: Task;

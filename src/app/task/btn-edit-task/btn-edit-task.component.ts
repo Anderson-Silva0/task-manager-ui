@@ -1,15 +1,18 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import Task from '../../models/task.model';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { TaskStatus } from '../task-status.enum';
 import { TaskService } from '../../services/task.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-btn-edicao-task',
   templateUrl: './btn-edit-task.component.html',
-  styleUrls: ['./btn-edit-task.component.css']
+  styleUrls: ['./btn-edit-task.component.css'],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, ModalModule]
 })
 export class BtnEdicaoTaskComponent implements OnInit {
   TaskStatus = TaskStatus;
@@ -22,12 +25,12 @@ export class BtnEdicaoTaskComponent implements OnInit {
   @Output() atualizaTaskEvent = new EventEmitter<Task>(); 
 
   modalRef?: BsModalRef;
-  frmEdit!: FormGroup;
+  frmEdit!: UntypedFormGroup;
   minDeadline: string = '';
 
   constructor(
     private modalService: BsModalService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private taskService: TaskService,
     private snackBar: MatSnackBar
   ) {

@@ -1,7 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { CommonModule } from '@angular/common';
 import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { UserFormComponent } from './user-form/user-form.component';
@@ -10,7 +13,15 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  styleUrls: ['./user.component.css'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatDialogModule
+  ]
 })
 export class UserComponent implements OnInit {
   dataSource = new MatTableDataSource<User>([]);

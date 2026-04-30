@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-btn-excluir-task',
   templateUrl: './btn-delete-task.component.html',
-  styleUrls: ['./btn-delete-task.component.css']
+  styleUrls: ['./btn-delete-task.component.css'],
+  standalone: true,
+  imports: [MatDialogModule]
 })
 export class BtnExcluirTaskComponent implements OnInit {
 
