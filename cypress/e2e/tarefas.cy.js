@@ -1,84 +1,68 @@
-describe("Testes de Tarefas", () => {
+import { ROTAS } from "../support/constants/routes";
+import { TASK_SELECTORS } from "../support/constants/task.selectors";
+import {
+  gerarDadosUsuario,
+  cadastrarUsuario,
+  validarUsuarioNaTabela,
+} from "../support/actions/user.actions";
+import {
+  gerarDadosTarefa,
+  aguardarPaginaTarefasCarregada,
+  cadastrarTarefaVinculadaAoUsuario,
+  validarTarefaNosCards,
+  abrirEdicaoDaPrimeiraTarefaNaoConcluida,
+  editarTituloETornarConcluida,
+  validarTarefaEditadaComoConcluida,
+  tentarEditarTarefaConcluida,
+  validarBloqueioEdicaoTarefaConcluida,
+  excluirPrimeiraTarefa,
+  validarExclusaoTarefaComSucesso,
+} from "../support/actions/task.actions";
+
+describe("CRUD de Tarefas", () => {
   let nomeUsuario;
   let emailUsuario;
 
   beforeEach(() => {
-    cy.visit("/users");
-    const timestamp = Date.now();
-    nomeUsuario = `Usuário Teste ${timestamp}`;
-    emailUsuario = `usuario${timestamp}@teste.com`;
+    const { nome, email } = gerarDadosUsuario("Usuário Teste", "usuario");
+    nomeUsuario = nome;
+    emailUsuario = email;
 
-    cy.get("button.btn-success").should("be.visible").click();
-    cy.get('input[formControlName="name"]').type(nomeUsuario);
-    cy.get('input[formControlName="email"]').type(emailUsuario);
-    cy.get('button[type="submit"]').click();
-    cy.get("table").should("contain", nomeUsuario);
+    cy.visit(ROTAS.usuarios);
+    cadastrarUsuario(nomeUsuario, emailUsuario);
+    validarUsuarioNaTabela(nomeUsuario);
 
-    cy.visit("/tasks");
-
-    cy.get(".fa-spinner").should("not.exist");
+    cy.visit(ROTAS.tarefas);
+    aguardarPaginaTarefasCarregada();
   });
 
   it("deve cadastrar uma nova tarefa", () => {
-    const timestamp = Date.now();
-    const titulo = `Tarefa Teste ${timestamp}`;
-    const descricao = `Descrição da tarefa ${timestamp}`;
+    const { titulo, descricao } = gerarDadosTarefa("Tarefa Teste");
 
-    cy.get("button.btn-success").should("be.visible").click();
-    cy.get('input[formControlName="title"]').type(titulo);
-    cy.get('textarea[formControlName="description"]').type(descricao);
-    cy.get('select[formControlName="userId"]').select(
-      `${nomeUsuario} (${emailUsuario})`
-    );
-    cy.get('button[type="submit"]').click();
-    cy.get(".card-title").should("contain", titulo);
-    cy.get(".card-text").should("contain", descricao);
+    cadastrarTarefaVinculadaAoUsuario(titulo, descricao, nomeUsuario, emailUsuario);
+    validarTarefaNosCards(titulo, descricao);
   });
 
   it("deve listar as tarefas cadastradas", () => {
-    cy.get(".card").should("be.visible");
-    cy.get(".card").should("have.length.greaterThan", 0);
+    cy.get(TASK_SELECTORS.card).should("be.visible");
+    cy.get(TASK_SELECTORS.card).should("have.length.greaterThan", 0);
   });
 
-  it("Update - deve editar uma tarefa existente e marcar como concluída", () => {
-    const timestamp = Date.now();
-    const novoTitulo = `Título Editado ${timestamp}`;
+  it("deve editar uma tarefa existente e marcar como concluída", () => {
+    const { titulo: novoTitulo } = gerarDadosTarefa("Título Editado");
 
-    cy.get('.task-status .badge')
-      .not(':contains("Concluído")')
-      .first()
-      .parents('.card')
-      .within(() => {
-        cy.get('button.btn-outline-primary').click();
-      });
-
-    cy.get('input[formControlName="title"]').clear().type(novoTitulo);
-    cy.get('select[formControlName="status"]').select("CONCLUIDO");
-
-    cy.get('button[type="submit"]').click();
-
-    cy.get(".card-title").should("contain", novoTitulo);
-
-    cy.get(".badge.bg-success").should("contain", "Concluído");
+    abrirEdicaoDaPrimeiraTarefaNaoConcluida();
+    editarTituloETornarConcluida(novoTitulo);
+    validarTarefaEditadaComoConcluida(novoTitulo);
   });
-
 
   it("não deve permitir edição de tarefa com status concluído", () => {
-    cy.get('.task-status .badge')
-      .contains("Concluído")
-      .first()
-      .parents('.card')
-      .within(() => {
-        cy.get("button.btn-outline-primary").click();
-      });
-
-    cy.contains("Não é possível editar tarefas concluídas").should("be.visible");
+    tentarEditarTarefaConcluida();
+    validarBloqueioEdicaoTarefaConcluida();
   });
 
-  it("Delete - deve excluir uma tarefa", () => {
-    cy.get("button.btn-danger").first().click();
-    cy.get("mat-dialog-container").should("be.visible");
-    cy.get('mat-dialog-actions button[color="warn"]').click();
-    cy.contains("Tarefa excluída com sucesso").should("be.visible");
+  it("deve excluir uma tarefa", () => {
+    excluirPrimeiraTarefa();
+    validarExclusaoTarefaComSucesso();
   });
 });

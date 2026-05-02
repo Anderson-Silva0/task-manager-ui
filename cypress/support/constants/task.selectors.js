@@ -1,0 +1,18 @@
+export const TASK_SELECTORS = {
+    btnNovaTarefa: "button.btn-success",
+    btnEditarTarefa: "button.btn-outline-primary",
+    btnDeletarTarefa: "button.btn-danger",
+    inputTitulo: 'input[formControlName="title"]',
+    textareaDescricao: 'textarea[formControlName="description"]',
+    selectUsuario: 'select[formControlName="userId"]',
+    selectStatus: 'select[formControlName="status"]',
+    btnSubmit: 'button[type="submit"]',
+    card: ".card",
+    cardTitulo: ".card-title",
+    cardDescricao: ".card-text",
+    badgeStatus: ".task-status .badge",
+    badgeConcluido: ".badge.bg-success",
+    spinnerCarregamento: ".fa-spinner",
+    dialogConfirmacao: "mat-dialog-container",
+    btnConfirmarAcaoPerigosa: 'mat-dialog-actions button[color="warn"]',
+};
